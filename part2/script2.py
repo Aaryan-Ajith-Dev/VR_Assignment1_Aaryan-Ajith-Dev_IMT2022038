@@ -102,4 +102,4 @@ def create_panorama(image1_path, image2_path, output_path, coeff):
 
 
 create_panorama('middle.jpeg', 'right.jpeg', 'output.jpeg', 2)
-# create_panorama('left.jpeg', 'output.jpeg', 'final.jpeg', 3)
+create_panorama('left.jpeg', 'output.jpeg', 'final.jpeg', 3)
