@@ -95,5 +95,5 @@ def create_panorama(image1_path, image2_path, output_path):
 
 
 
-create_panorama('middle.jpeg', 'right.jpeg', 'output1.jpeg')
+create_panorama('middle.jpeg', 'right.jpeg', 'output.jpeg')
 create_panorama('left.jpeg', 'output.jpeg', 'final.jpeg')
