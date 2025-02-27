@@ -17,10 +17,13 @@ def blend(img1, img2, alpha1, alpha2):
     blended = img1.copy()
     for i in range(img1.shape[0]):
         for j in range(img1.shape[1]):
-            blended[i, j] = (alpha1[i, j] * img1[i, j] + alpha2[i, j] * img2[i, j]) / (alpha1[i, j] + alpha2[i, j])
+            if alpha1[i, j] + alpha2[i, j] < 1e-6:
+                blended[i, j] = 0
+            else:
+                blended[i, j] = (alpha1[i, j] * img1[i, j] + alpha2[i, j] * img2[i, j]) / (alpha1[i, j] + alpha2[i, j])
     return blended
 
-def create_panorama(image1_path, image2_path, output_path):
+def create_panorama(image1_path, image2_path, output_path, coeff):
     img1 = cv2.imread(image1_path)
     img2 = cv2.imread(image2_path)
 
@@ -46,9 +49,12 @@ def create_panorama(image1_path, image2_path, output_path):
     points1 = np.float32([kp1[m.queryIdx].pt for m in good_matches])
     points2 = np.float32([kp2[m.trainIdx].pt for m in good_matches])
 
-    # here m.queryIdx gives the index of the descriptor in the first set of descriptors (des1) for the current match
-    # and m.trainIdx gives the index of the descriptor in the second set of descriptors (des2) for the current match
-    
+    # display the matches
+    img_matches = cv2.drawMatches(img1, kp1, img2, kp2, good_matches, None, flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+    plt.imshow(cv2.cvtColor(img_matches, cv2.COLOR_BGR2RGB))
+    plt.axis('off')
+    plt.show()
+
 
 
     # Compute homography
@@ -61,10 +67,10 @@ def create_panorama(image1_path, image2_path, output_path):
 
     # Warp the second image
     height, width, _ = img1.shape
-    panorama = cv2.warpPerspective(img2, h, (width * 3, height))
+    panorama = cv2.warpPerspective(img2, h, (width * coeff, height))
 
     # find the warped distance transform
-    warped_alpha2 = cv2.warpPerspective(alpha2, h, (width * 3, height))
+    warped_alpha2 = cv2.warpPerspective(alpha2, h, (width * coeff, height))
 
     # find the warped distance transform for the first image
     warped_alpha1 = np.zeros_like(warped_alpha2)
@@ -83,7 +89,7 @@ def create_panorama(image1_path, image2_path, output_path):
     
     # panorama[0:height, 0:width] = img1
 
-    plt.imshow(alpha1), plt.show()
+    plt.imshow(warped_alpha1), plt.show()
     plt.imshow(warped_alpha2), plt.show()
     
     # Save the blended panorama
@@ -95,5 +101,5 @@ def create_panorama(image1_path, image2_path, output_path):
 
 
 
-create_panorama('middle.jpeg', 'right.jpeg', 'output.jpeg')
-create_panorama('left.jpeg', 'output.jpeg', 'final.jpeg')
+create_panorama('middle.jpeg', 'right.jpeg', 'output.jpeg', 2)
+# create_panorama('left.jpeg', 'output.jpeg', 'final.jpeg', 3)
