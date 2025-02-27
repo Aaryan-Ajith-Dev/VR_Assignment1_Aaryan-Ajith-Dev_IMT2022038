@@ -72,27 +72,6 @@ def part2_3(img, gray):
 
     print("Number of coins detected:",len(contours))
 
-# def hough_circles(img, gray):
-#     # Apply Hough Transform to detect circles
-#     gray1 = cv2.GaussianBlur(gray, (15, 15), 0)
-#     circles = cv2.HoughCircles(gray1, cv2.HOUGH_GRADIENT, 1, 20, param1=50, param2=30, minRadius=0, maxRadius=0)
-#     circles = np.uint16(np.around(circles))
-
-#     # draw the detected circles
-#     for i in circles[0, :]:
-#         # draw the outer circle
-#         cv2.circle(img, (i[0], i[1]), i[2], (0, 255, 0), 2)
-#         # draw the center of the circle
-#         cv2.circle(img, (i[0], i[1]), 2, (0, 0, 255), 3)
-
-#     # display the image with detected circles
-#     plt.figure(figsize=(10, 5))
-#     plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-#     plt.title('Detected Circles via Hough Transform')
-#     plt.show()
-
-#     print("Number of coins (using Hough Circles)",len(circles[0]))
-
 part1(img.copy(), gray.copy())
 part2_3(img.copy(), gray.copy())
 
