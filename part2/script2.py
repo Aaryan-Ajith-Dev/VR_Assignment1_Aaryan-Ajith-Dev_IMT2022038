@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def distance_transform(img):
-    # Compute the normalized distance from the boundary
+    # Compute the normalized distance from the boundary of image 'img'
     dist = np.zeros_like(img, dtype=np.float32)
     for i in range(img.shape[0]):
         for j in range(img.shape[1]):
