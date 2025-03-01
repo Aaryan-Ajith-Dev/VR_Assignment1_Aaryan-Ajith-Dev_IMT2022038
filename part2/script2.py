@@ -87,8 +87,6 @@ def create_panorama(image1_path, image2_path, output_path, coeff):
     print(img1_mask.shape, img2_mask.shape, warped_alpha1.shape, warped_alpha2.shape)
     blended = blend(img1_mask, img2_mask, warped_alpha1, warped_alpha2)
     
-    # panorama[0:height, 0:width] = img1
-
     plt.imshow(warped_alpha1), plt.show()
     plt.imshow(warped_alpha2), plt.show()
     
